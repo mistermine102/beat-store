@@ -1,7 +1,5 @@
 <template>
-  <div class="container">
-    <the-navbar></the-navbar>
-  </div>
+  <the-navbar></the-navbar>
   <router-view></router-view>
 </template>
 
@@ -11,6 +9,7 @@ import TheNavbar from "./components/layout/TheNavbar.vue";
 export default {
   components: {
     TheNavbar,
+
   },
 };
 </script>
@@ -21,5 +20,6 @@ body {
   color: white;
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
+  overflow-x: hidden; /* Hide vertical scrollbar */
 }
 </style>
