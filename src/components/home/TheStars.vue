@@ -52,7 +52,6 @@ section {
   left: 50px;
   right: 50px;
   display: flex;
-  justify-content: center;
 }
 
 div {
