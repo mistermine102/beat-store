@@ -35,7 +35,7 @@ export default {
 
 <style scoped>
 section {
-  position: absolute;
+  position: relative;
   margin: 5rem 0;
   left: 50px;
   right: 50px;
