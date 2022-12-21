@@ -13,7 +13,7 @@ div {
   color: white;
   border-radius: 0.5rem;
   margin: 1rem;
-  /* background-position-x: 50px; */
+  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.5);
   width: 40%;
   opacity: 50%;
   transition: all 0.2s ease-in;

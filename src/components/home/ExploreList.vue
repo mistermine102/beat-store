@@ -52,6 +52,6 @@ button {
 
 button:hover {
   background-color: rgb(184, 63, 63);
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 </style>
