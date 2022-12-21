@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import HomePage from "./pages/HomePage.vue"
+import UploadPage from "./components/itemsNavbar/UploadPage.vue"
 
 const routes = [
   { path: "/", redirect: "/home" },
   { path: "/home", component: HomePage },
-  { path: "/upload", component: null },
+  { path: "/upload", component: UploadPage },
   { path: "/:genre", component: null },
   { path: "/:beatId", component: null },
   { path: "/notFound(*)", component: null },
