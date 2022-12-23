@@ -3,7 +3,7 @@ import bodyParser from "body-parser"
 import cors from "cors"
 import mongoose from "mongoose"
 
-const dbUrl = "mongodb+srv://szymonix:szymonix@atlascluster.0207bfc.mongodb.net/?retryWrites=true&w=majority"
+const dbUrl = `mongodb+srv://szymonix:${process.env.MONGO_PASSWORD}@atlascluster.0207bfc.mongodb.net/?retryWrites=true&w=majority`
 
 const app = express();
 

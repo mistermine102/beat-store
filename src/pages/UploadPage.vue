@@ -1,20 +1,17 @@
 <template>
-    <div class="bord">
-      <label for="file">
-        <img
-          width="150"
-          src="../../assets/cloud.svg"
-          alt=""
-          class="svg-color"
-        />
-        <div class="text">
-          Drop there file or click me
-          <div class="transcript">(No file choosen, yet!)</div>
-        </div></label
-      >
-      <input type="file" id="file" accept="audio/*" />
-    </div>
+  <div class="bord">
+    <label for="file">
+      <img width="150" src="../../assets/cloud.svg" alt="" class="svg-color" />
+      <div class="text">
+        Drop there file or click me
+        <div class="transcript">(No file choosen, yet!)</div>
+      </div></label
+    >
+    <input type="file" id="file" accept="audio/*" />
+  </div>
+  <div class="button-container">
     <label for="file" class="btn-label">Choose your file</label>
+  </div>
 </template>
 
 <script>
@@ -22,6 +19,11 @@ export default {};
 </script>
 
 <style scoped>
+
+.button-container {
+  text-align: center;
+}
+
 input[type="file"] {
   display: none;
 }
@@ -42,8 +44,7 @@ input[type="file"] {
   font-size: 0.8rem;
 }
 .svg-color {
-  filter: invert(100%) sepia(0%) saturate(1352%) hue-rotate(87deg)
-    brightness(119%) contrast(119%);
+  filter: invert(100%) sepia(0%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
 }
 label {
   cursor: pointer;
