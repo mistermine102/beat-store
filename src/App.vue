@@ -1,6 +1,8 @@
 <template>
   <the-navbar></the-navbar>
-  <router-view></router-view>
+  <div>
+    <router-view></router-view>
+  </div>
   <the-footer></the-footer>
 </template>
 
@@ -15,6 +17,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+div {
+  margin-bottom: 2rem;
+}
+
+</style>
+
 
 <style>
 * {

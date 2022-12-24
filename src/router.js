@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import HomePage from "./pages/HomePage.vue"
-import UploadPage from "./components/itemsNavbar/UploadPage.vue"
+import UploadPage from "./pages/UploadPage.vue"
 
 const routes = [
   { path: "/", redirect: "/home" },

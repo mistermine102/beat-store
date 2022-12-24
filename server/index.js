@@ -1,24 +1,58 @@
-import express from "express";
-import bodyParser from "body-parser"
-import cors from "cors"
-import mongoose from "mongoose"
+import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config();
 
-const dbUrl = "mongodb+srv://szymonix:szymonix@atlascluster.0207bfc.mongodb.net/?retryWrites=true&w=majority"
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import multer from "multer";
+import mongoose from "mongoose";
+import uploadFile from "./s3.js";
+import fs from "fs";
+import util from "util";
+import FileModel from "./models/file.js";
+
+//function to make deleting files easier
+const unlinkFile = util.promisify(fs.unlink);
 
 const app = express();
 
-mongoose.set('strictQuery', true);
+const upload = multer({ dest: "uploads/" });
+const dbUrl = process.env.DB_URL;
 
-mongoose.connect(dbUrl)
-    .then(() => console.log("Connected to the database!"))
-    .catch(error => console.log(error))
+mongoose.set("strictQuery", false);
 
-app.use(bodyParser.json())
-app.use(cors())
+mongoose
+  .connect(dbUrl)
+  .then(() => console.log("connected to the database"))
+  .catch((err) => console.log(err));
 
-app.get("/", (req, res) => {
-    console.log("get request")
-    res.json("Message from the server")
-})
+app.use(bodyParser.json());
+app.use(cors());
 
-app.listen(3000, () => console.log("Server listening..."))
+//respond with all files stored in database
+app.get("/uploads", async (req, res) => {
+  const files = await FileModel.find();
+
+  res.json(files);
+});
+
+//upload a file to a database
+app.post("/uploads", upload.single("file"), async (req, res) => {
+  
+  //uploads a file to a AWS bucket
+  const fileInfo = await uploadFile(req.file);
+
+  //deletes a file from a local storage
+  await unlinkFile(req.file.path);
+
+  const newFile = new FileModel({
+    url: fileInfo.Location,
+  });
+
+  //saves a file url in a database
+  await newFile.save();
+
+  res.json("Upload success");
+});
+
+app.listen(3000, () => console.log("Server listening..."));
