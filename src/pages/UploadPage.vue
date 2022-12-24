@@ -1,25 +1,51 @@
 <template>
-  <div class="bord">
-    <label for="file">
-      <img width="150" src="../../assets/cloud.svg" alt="" class="svg-color" />
-      <div class="text">
-        Drop there file or click me
-        <div class="transcript">(No file choosen, yet!)</div>
-      </div></label
-    >
-    <input type="file" id="file" accept="audio/*" />
-  </div>
-  <div class="button-container">
-    <label for="file" class="btn-label">Choose your file</label>
-  </div>
+  <form @submit.prevent="submitForm">
+    <div class="bord">
+      <label for="file">
+        <img width="150" src="../assets/cloud.svg" alt="" class="svg-color" />
+        <div class="text">
+          Drop there file or click me
+          <div class="transcript">(No file choosen, yet!)</div>
+        </div></label
+      >
+      <input type="file" @change="onFileChange" id="file" name="file" accept="audio/*" />
+    </div>
+    <div class="button-container">
+      <label for="file" class="btn-label">Choose your file</label>
+      <button class="btn btn-primary">Upload</button>
+    </div>
+  </form>
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      file: null,
+    };
+  },
+  methods: {
+    onFileChange(e) {
+      this.file = e.target.files[0] || e.dataTransfer.files[0];
+    },
+
+    async submitForm(e) {
+      let formData = new FormData();
+      formData.append("file", this.file);
+
+      await axios.post("http://localhost:3000", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
-
 .button-container {
   text-align: center;
 }
