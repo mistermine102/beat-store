@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     async fetchFiles() {
-      const { data } = await axios.get("http://localhost:3000");
+      const { data } = await axios.get("http://localhost:3000/uploads");
       this.files = data;
     },
   },
