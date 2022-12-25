@@ -35,7 +35,7 @@ export default {
       let formData = new FormData();
       formData.append("file", this.file);
 
-      await axios.post("http://localhost:3000/uploads", formData, {
+      const { data } = await axios.post("http://localhost:3000/uploads", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

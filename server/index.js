@@ -21,4 +21,10 @@ app.use(cors());
 
 app.use("/uploads", uploadsRoutes);
 
+app.use((err, req, res, next) => {
+  console.log("Generic error handler runs...");
+  const { status = 500, message = "Something went wrong!" } = err;
+  res.status(status).json(message);
+});
+
 app.listen(3000, () => console.log("Server listening..."));

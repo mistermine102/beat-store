@@ -1,13 +1,12 @@
 import express from "express";
-import multer from "multer";
 import { index, newUpload } from "../controllers/uploads.js";
+import wrapAsync from "../utils/wrapAsync.js";
+import storage from "../multer/index.js";
 
 const router = express.Router();
-const upload = multer({ dest: "uploads/" });
+const upload = storage;
 
-router.get("/", index);
-
-//upload a file to a database
-router.post("/", upload.single("file"), newUpload);
+router.get("/", wrapAsync(index));
+router.post("/", upload.single("file"), wrapAsync(newUpload));
 
 export default router;
