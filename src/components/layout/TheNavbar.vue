@@ -11,9 +11,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <router-link to="/upload" class="nav-link mx-2" href="#">Upload<img width="18" class="svg-color ms-2" src="../../assets/upload.svg" alt="" /> </router-link>
-            <router-link to="/popular" class="nav-link mx-2" href="#">Popular<img width="24" class="svg-color ms-1" src="../../assets/trending.svg" alt="" /></router-link>
-            <router-link to="/cart" class="nav-link mx-2" href="#">Cart<img width="22" class="svg-color ms-2" src="../../assets/cart.svg" alt="" /></router-link>
+            <router-link to="/upload" class="nav-link mx-2">Upload<img width="18" class="svg-color ms-2" src="../../assets/upload.svg" alt="" /> </router-link>
+            <router-link to="/popular" class="nav-link mx-2">Popular<img width="24" class="svg-color ms-1" src="../../assets/trending.svg" alt="" /></router-link>
+            <router-link to="/cart" class="nav-link mx-2">Cart<img width="22" class="svg-color ms-2" src="../../assets/cart.svg" alt="" /></router-link>
+            <router-link to="/register" class="nav-link mx-2">Register</router-link>
+            <router-link to="/login" class="nav-link mx-2">Login</router-link>
           </div>
         </div>
       </div>

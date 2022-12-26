@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import uploadsRoutes from "./routes/uploads.js";
+import userRoutes from "./routes/user.js";
 
 const app = express();
 const dbUrl = process.env.DB_URL;
@@ -20,9 +21,14 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use("/uploads", uploadsRoutes);
+app.use("/", userRoutes);
+
+app.use('*', (req, res) => {
+  res.status(404).send("Page not found")
+})
 
 app.use((err, req, res, next) => {
-  console.log("Generic error handler runs...");
+  console.log("Generic error handler runs...", err.message);
   const { status = 500, message = "Something went wrong!" } = err;
   res.status(status).json(message);
 });
