@@ -23,9 +23,9 @@ app.use(cors());
 app.use("/uploads", uploadsRoutes);
 app.use("/", userRoutes);
 
-app.use('*', (req, res) => {
-  res.status(404).send("Page not found")
-})
+app.use("*", (req, res) => {
+  res.status(404).send("Page not found");
+});
 
 app.use((err, req, res, next) => {
   console.log("Generic error handler runs...", err.message);

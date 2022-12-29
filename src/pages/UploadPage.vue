@@ -35,15 +35,11 @@ export default {
       let formData = new FormData();
       formData.append("file", this.file);
 
-      try {
-        const { data } = await axios.post("http://localhost:3000/uploads", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-      } catch (error) {
-        console.log(error.response.data);
-      }
+      await axios.post("http://localhost:3000/uploads", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }).catch(err => console.log(err));
     },
   },
 };
