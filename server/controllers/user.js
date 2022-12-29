@@ -5,16 +5,7 @@ import UserModel from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import appError from "../utils/AppError.js";
-
-const signToken = (user) => {
-  const secret = process.env.JWT_SECRET;
-  return jwt.sign(user, secret);
-};
-
-const verifyToken = (token) => {
-  const secret = process.env.JWT_SECRET;
-  return jwt.verify(token, secret);
-};
+import { signToken, verifyToken } from "../utils/jwt.js";
 
 export const register = async (req, res) => {
   const { email, password } = req.body;
