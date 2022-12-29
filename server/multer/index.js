@@ -18,7 +18,7 @@ export default multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: 1024*1024*8,
+    fileSize: 1,
     files: 1,
   },
 });

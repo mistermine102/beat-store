@@ -1,12 +1,10 @@
 <template>
-  <div class="container">
     <the-stars></the-stars>
     <search-bar></search-bar>
     <explore-list></explore-list>
     <figure v-for="file in files" :key="file._id">
       <audio controls :src="file.url"></audio>
     </figure>
-  </div>
 </template>
 
 <script>
