@@ -3,19 +3,23 @@ env.config();
 
 import UserModel from "../models/user.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import appError from "../utils/AppError.js";
 import { signToken, verifyToken } from "../utils/jwt.js";
 
 export const register = async (req, res) => {
   const { email, password } = req.body;
 
+  console.log(email, password);
+
+  //check if email is free
   const foundUser = await UserModel.findOne({ email });
+  if (foundUser) throw new appError(400, "Email exists");
 
-  if (foundUser) {
-    throw new appError(400, "Email exists");
-  }
+  //validate email and password
+  if (!email || email.length === 0 || !email.includes("@")) throw new appError(400, "Invalid email");
+  if (!password || password.length < 6) throw new appError(400, "Password must be at least 6 characters long");
 
+  //hash password & create new User
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const newUser = new UserModel({
@@ -25,12 +29,20 @@ export const register = async (req, res) => {
 
   await newUser.save();
 
-  res.json("Registration success");
+  //send token and user to the client
+  newUser.password = null;
+
+  const token = signToken(JSON.stringify(newUser._id));
+
+  res.json({
+    token,
+    user: newUser,
+  });
 };
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
-
+  
   //authentication
   const foundUser = await UserModel.findOne({ email });
 
@@ -46,29 +58,16 @@ export const login = async (req, res) => {
     throw new appError(400, "Wrong email or password");
   }
 
+  foundUser.password = null;
   const token = signToken(JSON.stringify(foundUser._id));
 
-  res.send({
+  res.json({
     token,
+    user: foundUser,
   });
 };
 
 export const user = async (req, res) => {
-  const auth = req.headers.authorization;
-
-  if (!auth) {
-    throw new appError(400, "No token");
-  }
-
-  const token = auth.split(" ")[1];
-
-  let userId = verifyToken(token);
-
-  userId = userId.substring(1, userId.length - 1);
-
-  const foundUser = await UserModel.findById(userId);
-
-  foundUser.password = null;
-
-  res.json({ user: foundUser });
+  if (!req.user) throw new appError(500, "user route no req.user");
+  res.send(req.user);
 };

@@ -4,9 +4,10 @@ dotenv.config();
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import mongoose from "mongoose";
+import mongoose, { set } from "mongoose";
 import uploadsRoutes from "./routes/uploads.js";
 import userRoutes from "./routes/user.js";
+import { setUser } from "./middleware/index.js";
 
 const app = express();
 const dbUrl = process.env.DB_URL;
@@ -19,6 +20,9 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(cors());
+
+//setting req.user before every request
+app.use(setUser);
 
 app.use("/uploads", uploadsRoutes);
 app.use("/", userRoutes);
