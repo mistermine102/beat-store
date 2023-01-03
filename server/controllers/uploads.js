@@ -16,6 +16,7 @@ export const newUpload = async (req, res) => {
 
   const newFile = new FileModel({
     url: fileInfo.Location,
+    author: req.user,
   });
 
   //saves a file url in a database

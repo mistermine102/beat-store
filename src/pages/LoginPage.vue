@@ -40,6 +40,7 @@ export default {
         });
 
         this.$store.dispatch("saveToken", data.token);
+        this.$store.dispatch("setUser", data.user)
 
         this.$router.replace("/");
       } catch (error) {

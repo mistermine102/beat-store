@@ -25,6 +25,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  //clears error before every route switch
+  store.dispatch("setError", null);
+
   if (to.meta.reqAuth && !store.getters.isLoggedIn) {
     store.dispatch("setError", {
       message: "Must be logged to access this route",

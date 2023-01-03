@@ -11,8 +11,6 @@
 import TheNavbar from "./components/layout/TheNavbar.vue";
 import TheFooter from "./components/layout/TheFooter.vue";
 import BaseError from "./components/base/BaseError.vue";
-import axios from "axios";
-import interceptorsSetup from "./axios.js";
 
 export default {
   components: {
@@ -21,21 +19,8 @@ export default {
     BaseError,
   },
   async created() {
-    interceptorsSetup();
-
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      return;
-    }
-
-    try {
-      const { data } = await axios.get("http://localhost:3000/user");
-      this.$store.dispatch("setUser", data.user);
-    } catch (err) {
-      console.log(err.message);
-    }
-  },
+    await this.$store.dispatch("setUser")
+  }
 };
 </script>
 

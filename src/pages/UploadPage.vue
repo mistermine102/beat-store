@@ -39,7 +39,10 @@ export default {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }).catch(err => console.log(err));
+      }).catch(err => {
+        console.log(err.response.data)
+        this.$store.dispatch("setError", err.response.data)
+      });
     },
   },
 };

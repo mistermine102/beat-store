@@ -1,20 +1,22 @@
 import { createStore } from "vuex";
-import user from "../../server/models/user";
+import interceptorsSetup from "../axios.js";
+import axios from "axios";
+import errorModule from "./error.js";
 
 const store = createStore({
+  modules: {
+    error: errorModule,
+  },
   state() {
     return {
       user: null,
-      error: null,
     };
   },
   getters: {
     user(state) {
       return state.user;
     },
-    error(state) {
-      return state.error;
-    },
+
     isLoggedIn(state) {
       return !!state.user;
     },
@@ -26,28 +28,29 @@ const store = createStore({
     setUser(state, payload) {
       state.user = payload;
     },
-    closeError(state) {
-      state.error = null;
+    logout(state) {
+      state.user = null;
+      localStorage.removeItem("token");
     },
-    setError(state, payload) {
-      state.error = payload;
-    }
   },
   actions: {
     saveToken(ctx, payload) {
       ctx.commit("saveToken", payload);
     },
-    setUser(ctx, payload) {
-      ctx.commit("setUser", payload);
+    async setUser(ctx) {
+      interceptorsSetup();
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const { data } = await axios.get("http://localhost:3000/user");
+        ctx.commit("setUser", data);
+      } catch (err) {
+        console.log(err.message);
+      }
     },
-    closeError(ctx) {
-      ctx.commit("closeError");
-    },
-    setError(ctx, payload) {
-      ctx.commit("setError", payload);
-    },
-    logout() {
-      localStorage.removeItem("token")
+    logout(ctx) {
+      ctx.commit("logout");
     },
   },
 });
