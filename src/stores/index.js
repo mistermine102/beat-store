@@ -1,11 +1,14 @@
 import { createStore } from "vuex";
 import interceptorsSetup from "../axios.js";
 import axios from "axios";
+
 import errorModule from "./error.js";
+import beatsModule from "./beats.js";
 
 const store = createStore({
   modules: {
     error: errorModule,
+    beats: beatsModule,
   },
   state() {
     return {

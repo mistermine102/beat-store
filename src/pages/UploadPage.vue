@@ -35,14 +35,7 @@ export default {
       let formData = new FormData();
       formData.append("file", this.file);
 
-      await axios.post("http://localhost:3000/uploads", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }).catch(err => {
-        console.log(err.response.data)
-        this.$store.dispatch("setError", err.response.data)
-      });
+      this.$store.dispatch("beats/uploadBeat", formData);
     },
   },
 };

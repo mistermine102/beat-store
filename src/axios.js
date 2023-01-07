@@ -11,7 +11,14 @@ export default function setup() {
       return config;
     },
     (err) => {
+      console.log("AXIOS REQUEST ERROR, CHECK axios.js");
       return Promise.reject(err);
+    }
+  );
+  axios.interceptors.response.use(
+    (config) => config,
+    (err) => {
+      store.dispatch("setError", err);
     }
   );
 }
