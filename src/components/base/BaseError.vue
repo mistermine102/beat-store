@@ -2,7 +2,9 @@
   <div class="row">
     <div class="col-8 offset-2">
       <div v-if="error" class="alert alert-danger d-flex justify-content-between">
-        <p>{{ error.message }}</p>
+        <p>
+          <b>{{ error.status || 500 }}</b> {{ error.message || "Something went wrong" }}
+        </p>
         <button @click="closeError" class="btn-close"></button>
       </div>
     </div>

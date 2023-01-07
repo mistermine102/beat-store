@@ -23,19 +23,14 @@ export default {
       ctx.commit("fetchBeats", data);
     },
     async uploadBeat(ctx, payload) {
-      await axios
-        .post("http://localhost:3000/uploads", payload, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .catch((err) => {
-          console.log(err.response.data);
-          this.$store.dispatch("setError", err.response.data);
-        });
+      await axios.post("http://localhost:3000/uploads", payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
     },
     async deleteBeat(ctx, payload) {
-      axios.delete("http://localhost:3000")
+      axios.delete("http://localhost:3000");
     },
   },
 };

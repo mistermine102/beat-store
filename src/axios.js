@@ -18,7 +18,11 @@ export default function setup() {
   axios.interceptors.response.use(
     (config) => config,
     (err) => {
-      store.dispatch("setError", err);
+      const newErr = {
+        status: err.response.status,
+        message: err.response.data,
+      };
+      store.dispatch("setError", newErr);
     }
   );
 }
