@@ -7,13 +7,15 @@ import { verifyToken } from "../utils/jwt.js";
 
 export function isLoggedIn(req, res, next) {
   if (!req.user) throw new appError(400, "You must be logged in");
-
   next();
 }
 
 export async function setUser(req, res, next) {
   const auth = req.headers.authorization;
-  if (!auth) return;
+
+  if (!auth) {
+    return next()
+  }
 
   const token = auth.split(" ")[1];
   let userId = verifyToken(token);

@@ -8,6 +8,7 @@ export const index = async (req, res) => {
 };
 
 export const newUpload = async (req, res) => {
+
   //uploads a file to a AWS bucket
   const fileInfo = await uploadFile(req.file);
 
