@@ -19,8 +19,8 @@ export default {
     BaseError,
   },
   async created() {
-    await this.$store.dispatch("setUser")
-  }
+    await this.$store.dispatch("setUser");
+  },
 };
 </script>
 
