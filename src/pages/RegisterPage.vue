@@ -41,11 +41,8 @@ export default {
         this.$store.dispatch("saveToken", data.token);
         this.$store.dispatch("setUser", data.user);
 
-        this.$router.replace("/home")
-      } catch (error) {
-        console.log(error.response.data);
-        this.$store.dispatch("setError", error.response.data);
-      }
+        this.$router.replace("/home");
+      } catch (e) {}
     },
   },
 };

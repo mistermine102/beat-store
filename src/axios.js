@@ -22,7 +22,9 @@ export default function setup() {
         status: err.response.status,
         message: err.response.data,
       };
+
       store.dispatch("setError", newErr);
+      Promise.reject(err);
     }
   );
 }

@@ -33,20 +33,15 @@ export default {
   },
   methods: {
     async submitForm() {
-      try {
-        const { data } = await axios.post("http://localhost:3000/login", {
-          email: this.emailInput,
-          password: this.passwordInput,
-        });
+      const { data } = await axios.post("http://localhost:3000/login", {
+        email: this.emailInput,
+        password: this.passwordInput,
+      });
 
-        this.$store.dispatch("saveToken", data.token);
-        this.$store.dispatch("setUser", data.user)
+      this.$store.dispatch("saveToken", data.token);
+      this.$store.dispatch("setUser", data.user);
 
-        this.$router.replace("/");
-      } catch (error) {
-        console.log(error);
-        this.$store.dispatch("setError", error);
-      }
+      this.$router.replace("/");
     },
   },
 };

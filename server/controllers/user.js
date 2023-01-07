@@ -9,8 +9,6 @@ import { signToken, verifyToken } from "../utils/jwt.js";
 export const register = async (req, res) => {
   const { email, password } = req.body;
 
-  console.log(email, password);
-
   //check if email is free
   const foundUser = await UserModel.findOne({ email });
   if (foundUser) throw new appError(400, "Email exists");
@@ -22,6 +20,7 @@ export const register = async (req, res) => {
   //hash password & create new User
   const hashedPassword = await bcrypt.hash(password, 10);
 
+  //create and save the user
   const newUser = new UserModel({
     email,
     password: hashedPassword,
@@ -29,7 +28,7 @@ export const register = async (req, res) => {
 
   await newUser.save();
 
-  //send token and user to the client
+  //send token and user info to the client
   newUser.password = null;
 
   const token = signToken(JSON.stringify(newUser._id));
