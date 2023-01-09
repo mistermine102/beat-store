@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   data() {
     return {
@@ -32,16 +30,11 @@ export default {
     };
   },
   methods: {
-    async submitForm() {
-      const { data } = await axios.post("http://localhost:3000/login", {
+    submitForm() {
+      this.$store.dispatch("login", {
         email: this.emailInput,
         password: this.passwordInput,
       });
-
-      this.$store.dispatch("saveToken", data.token);
-      this.$store.dispatch("setUser", data.user);
-
-      this.$router.replace("/");
     },
   },
 };

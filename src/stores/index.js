@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import interceptorsSetup from "../axios.js";
 import axios from "axios";
+import router from "../router.js"
 
 import errorModule from "./error.js";
 import beatsModule from "./beats.js";
@@ -54,6 +55,32 @@ const store = createStore({
     },
     logout(ctx) {
       ctx.commit("logout");
+    },
+    async login(ctx, payload) {
+      try {
+        const { data } = await axios.post("http://localhost:3000/login", {
+          email: payload.email,
+          password: payload.password,
+        });
+
+        ctx.dispatch("saveToken", data.token);
+        ctx.dispatch("setUser", data.user);
+
+        router.replace("/home")
+      } catch (err) {}
+    },
+    async register(ctx, payload) {
+      try {
+        const { data } = await axios.post("http://localhost:3000/register", {
+          email: payload.email,
+          password: payload.password,
+        });
+
+        ctx.dispatch("saveToken", data.token);
+        ctx.dispatch("setUser", data.user);
+
+        router.replace("/home")
+      } catch (err) {}
     },
   },
 });

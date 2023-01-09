@@ -19,9 +19,19 @@ export default function setup() {
     (config) => config,
     (err) => {
       const newErr = {
-        status: err.response.status,
-        message: err.response.data,
+        message: null,
+        status: null,
       };
+
+      if (!err.response) {
+        newErr.message = "Can't connect to the server";
+        newErr.status = 500;
+        store.dispatch("setError", newErr);
+        return Promise.reject(err);
+      }
+
+      newErr.message = err.response.data || "Something went wrong";
+      newErr.status = err.response.status || 500;
 
       store.dispatch("setError", newErr);
       Promise.reject(err);

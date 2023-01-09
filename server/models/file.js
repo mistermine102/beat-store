@@ -6,6 +6,7 @@ const fileSchema = new mongoose.Schema({
     ref: "User",
   },
   url: String,
+  filename: String,
 });
 
 export default mongoose.model("File", fileSchema);
