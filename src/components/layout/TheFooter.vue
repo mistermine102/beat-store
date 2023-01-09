@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-2 d-flex align-items-center">
           <img width="40" src="../../assets/mainLogo.svg" alt="" />
-          <p class="text-muted ms-3">&copy; 2022, H I P H O P bez reszty oddany</p>
+          <p class="text-muted ms-3">&copy; {{ Date().split(" ")[3] }} H I P H O P bez reszty oddany</p>
         </div>
         <nav class="col-8 d-flex">
           <ul>

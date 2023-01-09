@@ -1,10 +1,6 @@
 <template>
   <section>
-    <div
-      v-for="(item, index) in 20"
-      :key="index"
-      :style="generateStyles()"
-    ></div>
+    <div v-for="(item, index) in 20" :key="index" :style="generateStyles()"></div>
   </section>
 </template>
 
@@ -19,9 +15,11 @@ export default {
       const signNumberX = Math.random();
       const signNumberY = Math.random();
 
-      const r = Math.floor(Math.random() * 255);
-      const g = Math.floor(Math.random() * 255);
-      const b = Math.floor(Math.random() * 255);
+      // const r = Math.floor(Math.random() * 40);
+      // const g = Math.floor(Math.random() * 40);
+      const b = Math.floor(Math.random() * 100) + 155;
+      const r = 100;
+      const g = 200;
 
       const color = `rgb(${r},${g},${b})`;
 
@@ -38,7 +36,7 @@ export default {
       return {
         transform: `scale(${scale}) translateY(${signY}${translateY}px) translateX(${signX}${translateX}px)`,
         backgroundColor: color,
-        boxShadow: `1px 1px 10px 1px ${color}`
+        boxShadow: `1px 1px 10px 1px ${color}`,
       };
     },
   },

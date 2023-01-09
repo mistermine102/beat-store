@@ -67,6 +67,6 @@ export const login = async (req, res) => {
 };
 
 export const user = async (req, res) => {
-  if (!req.user) throw new appError(500, "user route no req.user");
+  if (!req.user) return res.send();
   res.send(req.user);
 };

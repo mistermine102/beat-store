@@ -8,6 +8,7 @@ import mongoose, { set } from "mongoose";
 import uploadsRoutes from "./routes/uploads.js";
 import userRoutes from "./routes/user.js";
 import { setUser } from "./middleware/index.js";
+import wrapAsync from "./utils/wrapAsync.js";
 
 const app = express();
 const dbUrl = process.env.DB_URL;
@@ -22,7 +23,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //setting req.user before every request
-app.use(setUser);
+app.use(wrapAsync(setUser));
 
 app.use("/uploads", uploadsRoutes);
 app.use("/", userRoutes);

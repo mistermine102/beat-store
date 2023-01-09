@@ -12,7 +12,7 @@ export default multer({
   dest: "uploads/",
   fileFilter,
   limits: {
-    fileSize: 1,
+    fileSize: 10000000000,
     files: 1,
   },
 });

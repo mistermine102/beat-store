@@ -4,7 +4,7 @@
   <explore-list></explore-list>
   <figure v-for="beat in beats" :key="beat._id">
     <audio controls :src="beat.url"></audio>
-    <button @click="deleteBeat(beat._id)" class="btn btn-danger">Delete</button>
+    <button @click="deleteBeat(beat)" class="btn btn-danger">Delete</button>
     <p>Author {{ beat.author }}</p>
     <p>Curren {{ currentUser }}</p>
   </figure>
@@ -25,8 +25,8 @@ export default {
     fetchBeats() {
       this.$store.dispatch("beats/fetchBeats");
     },
-    deleteBeat(id) {
-      this.$store.dispatch("beats/deleteBeat", id);
+    deleteBeat(beat) {
+      this.$store.dispatch("beats/deleteBeat", beat);
     },
   },
   computed: {
@@ -38,8 +38,8 @@ export default {
       return this.$store.getters["beats/beats"];
     },
   },
-  async created() {
-    await this.fetchBeats();
+  created() {
+    this.fetchBeats();
   },
 };
 </script>
