@@ -29,7 +29,9 @@ export async function setUser(req, res, next) {
 
   userId = userId.substring(1, userId.length - 1);
 
-  const user = await UserModel.findById(userId);
+  const user = await UserModel.findById(userId).populate("beats");
+  if (!user) return next()
+
   user.password = null;
 
   req.user = user;

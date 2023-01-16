@@ -34,7 +34,7 @@ export default function setup() {
       newErr.status = err.response.status || 500;
 
       store.dispatch("setError", newErr);
-      Promise.reject(err);
+      //Promise.reject(err);
     }
   );
 }

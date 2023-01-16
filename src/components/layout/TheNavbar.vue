@@ -6,21 +6,54 @@
           <img width="50" src="../../assets/mainLogo.svg" alt="" />
         </router-link>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <router-link to="/upload" class="nav-link mx-2">Upload<img width="18" class="svg-color ms-2" src="../../assets/upload.svg" alt="" /> </router-link>
-            <router-link to="/popular" class="nav-link mx-2">Popular<img width="24" class="svg-color ms-1" src="../../assets/trending.svg" alt="" /></router-link>
-            <router-link to="/cart" class="nav-link mx-2">Cart<img width="22" class="svg-color ms-2" src="../../assets/cart.svg" alt="" /></router-link>
-            <router-link v-if="!isLoggedIn" to="/login" class="nav-link mx-2">Login</router-link>
-            <button @click="logout" v-else class="nav-link">Logout</button>
+            <router-link to="/upload" class="nav-link mx-2"
+              >Upload<img
+                width="18"
+                class="svg-color ms-2"
+                src="../../assets/upload.svg"
+                alt=""
+              />
+            </router-link>
+            <router-link to="/popular" class="nav-link mx-2"
+              >Popular<img
+                width="24"
+                class="svg-color ms-1"
+                src="../../assets/trending.svg"
+                alt=""
+            /></router-link>
+            <router-link to="/cart" class="nav-link mx-2"
+              >Cart<img
+                width="22"
+                class="svg-color ms-2"
+                src="../../assets/cart.svg"
+                alt=""
+            /></router-link>
+            <router-link v-if="!isLoggedIn" to="/login" class="nav-link mx-2"
+              >Login</router-link
+            >
+            <div v-else class="d-flex">
+              <button @click="logout" class="nav-link">Logout</button>
+              <router-link to="/profile" class="nav-link mx-2"
+                >Profile</router-link
+              >
+            </div>
           </div>
         </div>
       </div>
     </nav>
-    {{ user }}
   </header>
 </template>
 
@@ -52,6 +85,7 @@ nav {
 }
 
 .svg-color {
-  filter: invert(100%) sepia(0%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
+  filter: invert(100%) sepia(0%) saturate(1352%) hue-rotate(87deg)
+    brightness(119%) contrast(119%);
 }
 </style>

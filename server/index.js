@@ -9,6 +9,7 @@ import uploadsRoutes from "./routes/uploads.js";
 import userRoutes from "./routes/user.js";
 import { setUser } from "./middleware/index.js";
 import wrapAsync from "./utils/wrapAsync.js";
+import appError from "./utils/AppError.js";
 
 const app = express();
 const dbUrl = process.env.DB_URL;
@@ -17,7 +18,7 @@ mongoose.set("strictQuery", false);
 mongoose
   .connect(dbUrl)
   .then(() => console.log("connected to the database"))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log("Can't connect to the database"));
 
 app.use(bodyParser.json());
 app.use(cors());
