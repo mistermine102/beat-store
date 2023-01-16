@@ -2,9 +2,12 @@
   <the-stars></the-stars>
   <search-bar></search-bar>
   <explore-list></explore-list>
-  <figure v-for="beat in beats" :key="beat._id">
-    <audio controls :src="beat.url"></audio>
-  </figure>
+  <base-beat
+    v-for="beat in beats"
+    :key="beat._id"
+    :url="beat.url"
+    :id="beat._id"
+  ></base-beat>
 </template>
 
 <script>

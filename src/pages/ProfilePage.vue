@@ -1,10 +1,10 @@
 <template>
   <div>
     <h1>Hello {{ user.email }}</h1>
-    <figure v-for="beat in beats" :key="beat._id">
-      <audio :src="beat.url" controls></audio>
+    <div v-for="beat in beats" :key="beat._id">
+      <base-beat :url="beat.url" class="d-inline"></base-beat>
       <button @click="deleteBeat(beat)" class="btn btn-danger">Delete</button>
-    </figure>
+    </div>
   </div>
 </template>
 <script>
