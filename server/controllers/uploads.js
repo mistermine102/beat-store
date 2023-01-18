@@ -2,6 +2,7 @@ import { uploadFile, deleteFile } from "../s3.js";
 import FileModel from "../models/file.js";
 import unlinkFile from "../utils/unLinkFile.js";
 import appError from "../utils/AppError.js";
+import UserModel from "../models/user.js"
 
 export const index = async (req, res) => {
   const files = await FileModel.find();
@@ -23,8 +24,13 @@ export const newUpload = async (req, res) => {
     filename: req.file.filename,
   });
 
-  //saves a file info in a database
+  //Adds a beat to user beats
+  const user = await UserModel.findById(req.user._id)
+  user.beats.push(newFile);
+
+  //saves a file info and user in a database
   await newFile.save();
+  await user.save()
 
   res.json("Upload success");
 };
@@ -32,8 +38,18 @@ export const newUpload = async (req, res) => {
 export const deleteBeat = async (req, res) => {
   const { id } = req.params;
 
-  const { filename } = await FileModel.findByIdAndDelete(id);
+  //delete a reference from database
+  const { filename, author } = await FileModel.findByIdAndDelete(id);
+
+  //delete from AWS
   await deleteFile(filename);
+
+  //delete from user beat array ...
+  const user = await UserModel.findById(author)
+
+  user.beats = user.beats.filter(el => el != id);
+
+  await user.save()
 
   res.json(`Deleting beat with an id of ${id}`);
 };

@@ -5,6 +5,7 @@ import UploadPage from "./pages/UploadPage.vue";
 import RegisterPage from "./pages/RegisterPage.vue";
 import LoginPage from "./pages/LoginPage.vue";
 import store from "./stores/index.js";
+import ProfilePage from './pages/ProfilePage.vue'
 
 const routes = [
   { path: "/", redirect: "/home" },
@@ -17,6 +18,7 @@ const routes = [
   { path: "/:genre", component: null },
   { path: "/:beatId", component: null },
   { path: "/notFound(*)", component: null },
+  { path: "/profile", component: ProfilePage, meta: { reqAuth: true } }
 ];
 
 const router = createRouter({
@@ -24,20 +26,27 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  //clears error before every route switch
-  store.dispatch("setError", null);
+async function setup() {
+  await store.dispatch("setUser")
 
-  if (to.meta.reqAuth && !store.getters.isLoggedIn) {
-    store.dispatch("setError", {
-      message: "Must be logged to access this route",
-    });
-    next("/login");
-  } else if (to.meta.reqUnAuth && store.getters.isLoggedIn) {
-    next("/home");
-  } else {
-    next();
-  }
-});
+  router.beforeEach((to, from, next) => {
+    //clears error before every route switch
+    store.dispatch("setError", null);
+
+    //navigation guards
+    if (to.meta.reqAuth && !store.getters.isLoggedIn) {
+      store.dispatch("setError", {
+        message: "Must be logged to access this route",
+      });
+      next("/login");
+    } else if (to.meta.reqUnAuth && store.getters.isLoggedIn) {
+      next("/home");
+    } else {
+      next();
+    }
+  });
+}
+
+await setup()
 
 export default router;

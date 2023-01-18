@@ -18,9 +18,9 @@ export default {
     TheFooter,
     BaseError,
   },
-  async created() {
-    await this.$store.dispatch("setUser");
-  },
+  // async created() {
+  //   await this.$store.dispatch("setUser");
+  // },
 };
 </script>
 

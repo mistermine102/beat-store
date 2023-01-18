@@ -57,17 +57,16 @@ const store = createStore({
       ctx.commit("logout");
     },
     async login(ctx, payload) {
-      try {
-        const { data } = await axios.post("http://localhost:3000/login", {
-          email: payload.email,
-          password: payload.password,
-        });
+      const { data } = await axios.post("http://localhost:3000/login", {
+        email: payload.email,
+        password: payload.password,
+      }).catch(err => console.log(err));
 
-        ctx.dispatch("saveToken", data.token);
-        ctx.dispatch("setUser", data.user);
+      ctx.dispatch("saveToken", data.token);
+      ctx.dispatch("setUser", data.user);
 
-        router.replace("/home")
-      } catch (err) {}
+      router.replace("/home")
+
     },
     async register(ctx, payload) {
       try {
@@ -80,7 +79,7 @@ const store = createStore({
         ctx.dispatch("setUser", data.user);
 
         router.replace("/home")
-      } catch (err) {}
+      } catch (err) { }
     },
   },
 });

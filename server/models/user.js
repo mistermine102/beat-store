@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   beats: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Review",
+      ref: "File",
     },
   ],
 });
