@@ -11,3 +11,4 @@ router.post("/", isLoggedIn, upload.single("file"), wrapAsync(newUpload));
 router.delete("/:id", isLoggedIn, wrapAsync(authorizeBeat), wrapAsync(deleteBeat));
 
 export default router;
+

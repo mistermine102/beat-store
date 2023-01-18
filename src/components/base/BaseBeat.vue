@@ -9,6 +9,9 @@
       <progress @click="setCurrentTime" :value="progress" max="100">
         <div>46478785345834589</div>
       </progress>
+      <div class="volume">
+        <span class="volume-point"></span>
+      </div>
     </div>
   </div>
 </template>
@@ -71,5 +74,24 @@ export default {
 <style scoped>
 progress {
   width: 50%;
+}
+
+.volume {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 1rem;
+  background-color: #c7c7c7;
+  border-radius: 1rem;
+  width: 10%;
+  height: 5px;
+}
+
+.volume-point {
+  display: inline;
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  background-color: rgb(140, 140, 140);
+  border-radius: 50%;
 }
 </style>
