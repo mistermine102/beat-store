@@ -1,23 +1,22 @@
 <template>
-  <div>
-    <audio ref="audio" :src="url"></audio>
-    <div class="controls">
-      <button class="btn btn-success" @click="play">Play</button>
-      <input
-        ref="progressBar"
-        type="range"
-        min="0"
-        max="100"
-        @input="changeCurrentTime"
-        v-model="progress"
-      />
-      <button @click="mute">Mute</button>
-      <input
-        type="range"
-        v-model="volume"
-        @input="changeVolume"
-        class="win10-thumb volume"
-      />
+  <div class="container mt-3">
+    <div class="row d-flex justify-content-start">
+      <div class="col-8">
+        <audio ref="audio" :src="url"></audio>
+        <div class="d-flex flex-column align-items-center justify-content-between p-2">
+          <p>{{ id }}</p>
+
+          <div class="d-inline d-flex align-items-center">
+            <button v-if="!isPlaying" class="btn btn-link p-0 me-3" @click="play"><img class="svg-color" width="40" src="../../assets/play.svg" /></button>
+            <button v-else class="btn btn-link p-0 me-3" @click="pause"><img class="svg-color" width="40" src="../../assets/pause.svg" /></button>
+            <input ref="progressBar" type="range" min="0" max="100" @input="changeCurrentTime" v-model="progress" />
+          </div>
+          <div class="d-inline d-flex align-items-center">
+            <button class="btn btn-link p-0 me-2" @click="mute"><img class="svg-color" src="../../assets/mute.svg" width="15" alt="" /></button>
+            <input type="range" v-model="volume" @input="changeVolume" class="win10-thumb volume" />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -31,10 +30,12 @@ export default {
       interval: null,
       volume: 25,
       volumeBeforeMute: 0,
+      isPlaying: false,
     };
   },
   methods: {
     play() {
+      this.isPlaying = true;
       this.$refs.audio.play();
       this.interval = setInterval(() => {
         const { audio } = this.$refs;
@@ -46,6 +47,7 @@ export default {
       }, 10);
     },
     pause() {
+      this.isPlaying = false;
       this.$refs.audio.pause();
       clearInterval(this.interval);
     },
@@ -95,17 +97,12 @@ export default {
   },
   mounted() {
     this.$refs.audio.volume = 0.25;
-    console.log(this.$refs.progressBar);
   },
 };
 </script>
 <style scoped>
-.controls {
-  display: flex;
-}
-
 .volume {
-  transform: scale(0.5) translateX(-50%);
+  transform: scale(0.3) translateX(-118%);
 }
 
 input[type="range"] {
@@ -118,16 +115,16 @@ input[type="range"] {
   --thumb-height: 0.5em;
   --track-height: 0.125em;
   --track-color: rgba(255, 255, 255, 0.8);
-  --brightness-hover: 120%;
+  --brightness-hover: 80%;
   --brightness-down: 95%;
   --clip-edges: 0.125em;
 }
 
 input[type="range"].win10-thumb {
-  color: rgb(135, 135, 135);
-  --thumb-height: 1.375em;
-  --thumb-width: 0.5em;
-  --clip-edges: 0.0125em;
+  color: rgb(255, 0, 0);
+  --thumb-height: 2em;
+  --thumb-width: 1em;
+  --clip-edges: 0.125em;
 }
 
 /* === range commons === */
@@ -159,30 +156,25 @@ input[type="range"]::-webkit-slider-thumb {
 
 input[type="range"]::-webkit-slider-thumb {
   --thumb-radius: calc((var(--thumb-height) * 0.5) - 1px);
-  --clip-top: calc((var(--thumb-height) - var(--track-height)) * 0.5 - 0.5px);
+  --clip-top: calc((var(--thumb-height) - var(--track-height)) * 0.5 - 0.7px);
   --clip-bottom: calc(var(--thumb-height) - var(--clip-top));
-  --clip-further: calc(100% + 1px);
-  --box-fill: calc(-100vmax - var(--thumb-width, var(--thumb-height))) 0 0
-    100vmax currentColor;
+  --clip-further: calc(100% + 0px);
+  --box-fill: calc(-100vmax - var(--thumb-width, var(--thumb-height))) 0 0 100vmax currentColor;
 
   width: var(--thumb-width, var(--thumb-height));
-  background: linear-gradient(currentColor 0 0) scroll no-repeat left center /
-    50% calc(var(--track-height) + 1px);
-  background-color: currentColor;
+  background: linear-gradient(currentColor 0 0) scroll no-repeat left center / 50% calc(var(--track-height) + 1px);
   box-shadow: var(--box-fill);
   border-radius: var(--thumb-width, var(--thumb-height));
 
   filter: brightness(100%);
-  clip-path: polygon(
-    100% -1px,
-    var(--clip-edges) -1px,
-    0 var(--clip-top),
-    -100vmax var(--clip-top),
-    -100vmax var(--clip-bottom),
-    0 var(--clip-bottom),
-    var(--clip-edges) 100%,
-    var(--clip-further) var(--clip-further)
-  );
+  clip-path: polygon(100% -1px, var(--clip-edges) -1px, 0 var(--clip-top), -100vmax var(--clip-top), -100vmax var(--clip-bottom), 0 var(--clip-bottom), var(--clip-edges) 100%, var(--clip-further) var(--clip-further));
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  background-color: white;
+}
+input[type="range"].win10-thumb::-webkit-slider-thumb {
+  background-color: white;
 }
 
 input[type="range"]:hover::-webkit-slider-thumb {
@@ -194,8 +186,7 @@ input[type="range"]:active::-webkit-slider-thumb {
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
-  background: linear-gradient(var(--track-color) 0 0) scroll no-repeat center /
-    100% calc(var(--track-height) + 1px);
+  background: linear-gradient(var(--track-color) 0 0) scroll no-repeat center / 100% calc(var(--track-height) + 1px);
 }
 
 input[type="range"]:disabled::-webkit-slider-thumb {
