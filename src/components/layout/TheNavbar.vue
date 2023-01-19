@@ -83,9 +83,4 @@ header {
 nav {
   background-color: rgb(20, 20, 40);
 }
-
-.svg-color {
-  filter: invert(100%) sepia(0%) saturate(1352%) hue-rotate(87deg)
-    brightness(119%) contrast(119%);
-}
 </style>
