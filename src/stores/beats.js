@@ -1,31 +1,43 @@
 import axios from "axios";
-import router from "../router.js"
+import router from "../router.js";
 
 export default {
   namespaced: true,
   state() {
     return {
       beats: [],
+      currentlyPlaying: null,
     };
   },
   getters: {
     beats(state) {
       return state.beats;
     },
+    isPlaying(state) {
+      return !!state.currentlyPlaying;
+    },
+    currentlyPlaying(state) {
+      return state.currentlyPlaying;
+    },
   },
   mutations: {
+    play(state, payload) {
+      state.currentlyPlaying = payload;
+    },
     fetchBeats(state, payload) {
       state.beats = payload;
     },
     deleteBeat(state, payload) {
       state.beats = state.beats.filter((el) => el._id !== payload);
-    }
+    },
   },
   actions: {
+    play(ctx, payload) {
+      ctx.commit("play", payload);
+    },
     async fetchBeats(ctx, payload) {
-      let url = "http://localhost:3000/uploads"
+      let url = "http://localhost:3000/uploads";
       let beats;
-
 
       if (!payload) {
         const { data } = await axios.get(url).catch((err) => err);
@@ -50,7 +62,7 @@ export default {
       //reset the user with new user.beats array
       ctx.dispatch("setUser", {}, { root: true });
 
-      if (response) router.replace("/home")
+      if (response) router.replace("/home");
     },
     async deleteBeat(ctx, payload) {
       try {
@@ -71,5 +83,3 @@ export default {
     },
   },
 };
-
-

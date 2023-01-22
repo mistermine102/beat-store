@@ -1,19 +1,24 @@
 <template>
   <div class="container mt-3">
-    <div class="row d-flex justify-content-start">
+    <div class="row d-flex justify-content-start beat-bg rounded-3">
       <div class="col-8">
         <audio ref="audio" :src="url"></audio>
-        <div class="d-flex flex-column align-items-center justify-content-between p-2">
-          <p>{{ id }}</p>
-
-          <div class="d-inline d-flex align-items-center">
-            <button v-if="!isPlaying" class="btn btn-link p-0 me-3" @click="play"><img class="svg-color" width="40" src="../../assets/play.svg" /></button>
-            <button v-else class="btn btn-link p-0 me-3" @click="pause"><img class="svg-color" width="40" src="../../assets/pause.svg" /></button>
-            <input ref="progressBar" type="range" min="0" max="100" @input="changeCurrentTime" v-model="progress" />
+        <div class="d-flex p-2">
+          <div class="controls">
+            <div class="d-inline d-flex align-items-center">
+              <button v-if="!isPlaying" class="btn btn-link p-0 me-3 play-pause" @click="play"><img class="svg-color" width="40" src="../../assets/play.svg" /></button>
+              <button v-else class="btn btn-link p-0 me-3 play-pause" @click="pause"><img class="svg-color" width="40" src="../../assets/pause.svg" /></button>
+              <input ref="progressBar" type="range" min="0" max="100" @input="changeCurrentTime" v-model="progress" />
+            </div>
+            <div class="d-inline d-flex align-items-center">
+              <button class="btn btn-link p-0 me-2" @click="mute"><img class="svg-color" src="../../assets/mute.svg" width="15" alt="" /></button>
+              <input type="range" v-model="volume" @input="changeVolume" class="win10-thumb volume" />
+            </div>
+            <slot name="delete"></slot>
           </div>
-          <div class="d-inline d-flex align-items-center">
-            <button class="btn btn-link p-0 me-2" @click="mute"><img class="svg-color" src="../../assets/mute.svg" width="15" alt="" /></button>
-            <input type="range" v-model="volume" @input="changeVolume" class="win10-thumb volume" />
+          <div class="information ms-3 d-flex flex-column p-3">
+            <span class="text-muted mb-1">Duration: 0:00</span>
+            <span class="text-muted">Scale: {{ scale || "Unknown" }} </span>
           </div>
         </div>
       </div>
@@ -23,7 +28,7 @@
 
 <script>
 export default {
-  props: ["url", "id"],
+  props: ["url", "id", "scale"],
   data() {
     return {
       progress: 0,
@@ -35,7 +40,12 @@ export default {
   },
   methods: {
     play() {
+      if (this.$store.getters["beats/isPlaying"]) {
+        const currentlyPlaying = this.$store.getters["beats/currentlyPlaying"];
+        currentlyPlaying.pause();
+      }
       this.isPlaying = true;
+      this.$store.dispatch("beats/play", this.$refs.audio);
       this.$refs.audio.play();
       this.interval = setInterval(() => {
         const { audio } = this.$refs;
@@ -48,6 +58,7 @@ export default {
     },
     pause() {
       this.isPlaying = false;
+      this.$store.dispatch("beats/play", null);
       this.$refs.audio.pause();
       clearInterval(this.interval);
     },
@@ -101,8 +112,14 @@ export default {
 };
 </script>
 <style scoped>
+img:hover {
+  filter: invert(60%) sepia(0%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
+}
 .volume {
   transform: scale(0.3) translateX(-118%);
+}
+.beat-bg:hover {
+  background-color: rgb(15, 15, 30);
 }
 
 input[type="range"] {
@@ -111,9 +128,10 @@ input[type="range"] {
 }
 
 input[type="range"] {
-  color: #ef233c;
+  --thumb-color: brown;
+  color: var(--thumb-color);
   --thumb-height: 0.5em;
-  --track-height: 0.125em;
+  --track-height: 0.1em;
   --track-color: rgba(255, 255, 255, 0.8);
   --brightness-hover: 80%;
   --brightness-down: 95%;
@@ -121,7 +139,8 @@ input[type="range"] {
 }
 
 input[type="range"].win10-thumb {
-  color: rgb(255, 0, 0);
+  --thumb-color: rgb(188, 188, 188);
+  color: var(--thumb-color);
   --thumb-height: 2em;
   --thumb-width: 1em;
   --clip-edges: 0.125em;
@@ -171,10 +190,10 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 input[type="range"]::-webkit-slider-thumb {
-  background-color: white;
+  background-color: var(--thumb-color);
 }
 input[type="range"].win10-thumb::-webkit-slider-thumb {
-  background-color: white;
+  background-color: var(--thumb-color);
 }
 
 input[type="range"]:hover::-webkit-slider-thumb {
