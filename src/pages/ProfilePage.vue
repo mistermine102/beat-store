@@ -2,8 +2,9 @@
   <div>
     <h1>Hello {{ user.email }}</h1>
     <div v-for="beat in beats" :key="beat._id">
-      <base-beat :url="beat.url" class="d-inline"></base-beat>
-      <button @click="deleteBeat(beat)" class="btn btn-danger">Delete</button>
+      <base-beat :url="beat.url" :id="beat._id" class="d-inline">
+        <template #delete><button @click="deleteBeat(beat)" class="btn btn-danger">Delete</button></template>
+      </base-beat>
     </div>
   </div>
 </template>

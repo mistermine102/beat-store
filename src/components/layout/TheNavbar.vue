@@ -6,52 +6,22 @@
           <img width="50" src="../../assets/mainLogo.svg" alt="" />
         </router-link>
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <router-link to="/upload" class="nav-link mx-2"
-              >Upload<img
-                width="18"
-                class="svg-color ms-2"
-                src="../../assets/upload.svg"
-                alt=""
-              />
-            </router-link>
-            <router-link to="/popular" class="nav-link mx-2"
-              >Popular<img
-                width="24"
-                class="svg-color ms-1"
-                src="../../assets/trending.svg"
-                alt=""
-            /></router-link>
-            <router-link to="/cart" class="nav-link mx-2"
-              >Cart<img
-                width="22"
-                class="svg-color ms-2"
-                src="../../assets/cart.svg"
-                alt=""
-            /></router-link>
-            <router-link v-if="!isLoggedIn" to="/login" class="nav-link mx-2"
-              >Login</router-link
-            >
+            <router-link to="/upload" class="nav-link mx-2">Upload<img width="18" class="svg-color ms-2" src="../../assets/upload.svg" alt="" /> </router-link>
+            <router-link to="/popular" class="nav-link mx-2">Popular<img width="24" class="svg-color ms-1" src="../../assets/trending.svg" alt="" /></router-link>
+            <router-link to="/cart" class="nav-link mx-2">Cart<img width="22" class="svg-color ms-2" src="../../assets/cart.svg" alt="" /></router-link>
+            <router-link v-if="!isLoggedIn" to="/login" class="nav-link mx-2">Login</router-link>
             <div v-else class="d-flex">
-              <button @click="logout" class="nav-link">Logout</button>
-              <router-link to="/profile" class="nav-link mx-2"
-                >Profile</router-link
-              >
+              <button @click="logout" class="btn btn-link nav-link">Logout</button>
+              <router-link to="/profile" class="nav-link mx-2">Profile</router-link>
             </div>
           </div>
         </div>
+        {{ currentlyPlaying }}
       </div>
     </nav>
   </header>
@@ -65,6 +35,13 @@ export default {
     },
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
+    },
+    currentlyPlaying() {
+      if (this.$store.getters["beats/currentlyPlaying"]) {
+        return `Currnetly playing: ${this.$store.getters["beats/currentlyPlaying"]}`;
+      } else {
+        return "Not playing "
+      }
     },
   },
   methods: {
