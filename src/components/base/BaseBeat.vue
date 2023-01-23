@@ -2,13 +2,14 @@
   <div class="container mt-3">
     <div class="row d-flex justify-content-start beat-bg rounded-3">
       <div class="col-8">
-        <audio ref="audio" :src="url"></audio>
+        <audio ref="audio" :src="url" preload="metadata"></audio>
         <div class="d-flex p-2">
           <div class="controls">
             <div class="d-inline d-flex align-items-center">
               <button v-if="!isPlaying" class="btn btn-link p-0 me-3 play-pause" @click="play"><img class="svg-color" width="40" src="../../assets/play.svg" /></button>
               <button v-else class="btn btn-link p-0 me-3 play-pause" @click="pause"><img class="svg-color" width="40" src="../../assets/pause.svg" /></button>
-              <input ref="progressBar" type="range" min="0" max="100" @input="changeCurrentTime" v-model="progress" />
+              <input class="current-time" ref="progressBar" type="range" min="0" max="100" @input="changeCurrentTime" v-model="progress" />
+              <small class="mx-3">{{ currentTimeMinutes }} / {{ durationMinutes }}</small>
             </div>
             <div class="d-inline d-flex align-items-center">
               <button class="btn btn-link p-0 me-2" @click="mute"><img class="svg-color" src="../../assets/mute.svg" width="15" alt="" /></button>
@@ -16,9 +17,10 @@
             </div>
             <slot name="delete"></slot>
           </div>
-          <div class="information ms-3 d-flex flex-column p-3">
-            <span class="text-muted mb-1">Duration: 0:00</span>
-            <span class="text-muted">Scale: {{ scale || "Unknown" }} </span>
+          <div class="information ms-3 d-flex flex-row p-3">
+            <span class="text-muted me-2"> <b>Duration</b> 0:00</span>
+            <span class="text-muted me-2"> <b>Scale</b> {{ scale || "Unknown" }} </span>
+            <span class="text-muted"> <b>Bpm</b> {{ bpm || "Unknown" }} </span>
           </div>
         </div>
       </div>
@@ -31,9 +33,10 @@ export default {
   props: ["url", "id", "scale"],
   data() {
     return {
+      duration: 0,
       progress: 0,
       interval: null,
-      volume: 25,
+      volume: 5,
       volumeBeforeMute: 0,
       isPlaying: false,
     };
@@ -79,22 +82,6 @@ export default {
       const { audio } = this.$refs;
       audio.currentTime = (this.progress / 100) * audio.duration;
     },
-    // volumeUp() {
-    //   const { audio } = this.$refs;
-    //   if (audio.volume > 0.9) {
-    //     audio.volume = 1;
-    //     return;
-    //   }
-    //   audio.volume += 0.1;
-    // },
-    // volumeDown() {
-    //   const { audio } = this.$refs;
-    //   if (audio.volume < 0.1) {
-    //     audio.volume = 0;
-    //     return;
-    //   }
-    //   audio.volume -= 0.1;
-    // },
     // setCurrentTime(event) {
     //   const { audio } = this.$refs;
     //   const newCurrentProgress = event.offsetX / event.srcElement.clientWidth;
@@ -106,14 +93,43 @@ export default {
     //   audio.currentTime = newCurrentTime;
     // },
   },
+  computed: {
+    durationMinutes() {
+      const min = Math.floor(this.duration / 60);
+      let sec = Math.floor(this.duration % 60);
+      if (sec < 10) {
+        sec = `0${sec}`;
+      }
+      return `${min}:${sec}`;
+    },
+    currentTimeMinutes() {
+      const min = Math.floor((this.progress * this.duration) / 100 / 60);
+      let sec = Math.floor(((this.progress * this.duration) / 100) % 60);
+
+      if (sec < 10) {
+        sec = `0${sec}`;
+      }
+
+      return `${min}:${sec}`;
+    },
+  },
   mounted() {
-    this.$refs.audio.volume = 0.25;
+    this.$refs.audio.volume = 0.05;
+
+    this.$refs.audio.onloadedmetadata = () => {
+      this.duration = this.$refs.audio.duration;
+    };
   },
 };
 </script>
 <style scoped>
 img:hover {
   filter: invert(60%) sepia(0%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
+}
+
+small {
+  width: 5rem;
+  text-align: center;
 }
 .volume {
   transform: scale(0.3) translateX(-118%);

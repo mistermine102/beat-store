@@ -4,12 +4,11 @@ dotenv.config();
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import mongoose, { set } from "mongoose";
+import mongoose from "mongoose";
 import uploadsRoutes from "./routes/uploads.js";
 import userRoutes from "./routes/user.js";
 import { setUser } from "./middleware/index.js";
 import wrapAsync from "./utils/wrapAsync.js";
-import appError from "./utils/AppError.js";
 
 const app = express();
 const dbUrl = process.env.DB_URL;
