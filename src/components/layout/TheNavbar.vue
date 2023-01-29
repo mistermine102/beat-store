@@ -21,7 +21,6 @@
             </div>
           </div>
         </div>
-        {{ currentlyPlaying }}
       </div>
     </nav>
   </header>
@@ -35,13 +34,6 @@ export default {
     },
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
-    },
-    currentlyPlaying() {
-      if (this.$store.getters["beats/currentlyPlaying"]) {
-        return `Currnetly playing: ${this.$store.getters["beats/currentlyPlaying"]}`;
-      } else {
-        return "Not playing "
-      }
     },
   },
   methods: {

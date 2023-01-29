@@ -19,8 +19,8 @@
           </div>
           <div class="information ms-3 d-flex flex-row p-3">
             <span class="text-muted me-2"> <b>Duration</b> 0:00</span>
-            <span class="text-muted me-2"> <b>Scale</b> {{ scale || "Unknown" }} </span>
-            <span class="text-muted"> <b>Bpm</b> {{ bpm || "Unknown" }} </span>
+            <span class="text-muted me-2"> <b>Scale</b> {{ "Unknown" }} </span>
+            <span class="text-muted"> <b>Bpm</b> {{ "Unknown" }} </span>
           </div>
         </div>
       </div>
@@ -43,12 +43,12 @@ export default {
   },
   methods: {
     play() {
-      if (this.$store.getters["beats/isPlaying"]) {
-        const currentlyPlaying = this.$store.getters["beats/currentlyPlaying"];
-        currentlyPlaying.pause();
-      }
+      // if (this.$store.getters["beats/isPlaying"]) {
+      //   const currentlyPlaying = this.$store.getters["beats/currentlyPlaying"];
+      //   currentlyPlaying.pause();
+      // }
       this.isPlaying = true;
-      this.$store.dispatch("beats/play", this.$refs.audio);
+      this.$store.dispatch("beats/play", this.id);
       this.$refs.audio.play();
       this.interval = setInterval(() => {
         const { audio } = this.$refs;
@@ -111,6 +111,19 @@ export default {
       }
 
       return `${min}:${sec}`;
+    },
+    currentlyPlaying() {
+      return this.$store.getters["beats/currentlyPlaying"];
+    },
+  },
+  watch: {
+    currentlyPlaying(value) {
+      if (value) {
+        if (value !== this.id) {
+          this.$refs.audio.pause();
+          this.isPlaying = false;
+        }
+      }
     },
   },
   mounted() {
